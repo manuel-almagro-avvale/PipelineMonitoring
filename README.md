@@ -7,7 +7,7 @@ Requisitos: Node.js 24, cf CLI v8. No tiene dependencias npm.
 ## 1. Clonar
 
 ```bash
-git clone <url-del-repo>
+git clone https://github.com/manuel-almagro-avvale/PipelineMonitoring
 cd PipelineMonitoring
 ```
 
