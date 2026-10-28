@@ -1,7 +1,7 @@
 # Copiar a vars.yml (ignorado por git) y rellenar. Nunca subir vars.yml al repositorio.
 # Las service keys se pegan tal cual como bloque de texto (|), sin modificar el JSON.
 
-client_slug: vetclinic-prod
+client_slug: clientname-sandbox
 
 cpi_api_service_key: |
   {
@@ -24,9 +24,10 @@ alert_service_key: |
   }
 
 alert_endpoint_path: /http/pipeline/alert
-client_name: VetClinic
-environment: prod
-monitored_queues: JMS_ORDERS_IN,JMS_INVOICES_OUT
+client_name: ClientName
+environment: dev
+#Separar las colas por comas, p.e.: ColaUno,ColaDos
+monitored_queues: DemoQueue
 monitoring_freq_in_minutes: "5"
 monitoring_wait_in_seconds: "60"
 
