@@ -1,0 +1,31 @@
+# --- Secretos y configuración local ---
+# Variables de despliegue (cf push --vars-file). Solo se versiona la plantilla.
+vars*.yml
+!vars.example.yml
+# Variables para ejecución local (npm run start:local). Solo se versiona la plantilla.
+.env
+.env.*
+!.env.example
+# Service keys, certificados y claves sueltas
+*service-key*.json
+*serviceKey*.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# --- Material local de pruebas y generación de scripts del iFlow (incluye service keys) ---
+cpi/
+
+# --- Node ---
+node_modules/
+npm-debug.log*
+*.log
+
+# --- Sistema operativo y editores ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp

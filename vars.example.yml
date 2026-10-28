@@ -1,0 +1,37 @@
+# Copiar a vars.yml (ignorado por git) y rellenar. Nunca subir vars.yml al repositorio.
+# Las service keys se pegan tal cual como bloque de texto (|), sin modificar el JSON.
+
+client_slug: vetclinic-prod
+
+cpi_api_service_key: |
+  {
+    "oauth": {
+      "clientid": "sb-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx!b12345|it!b5678",
+      "clientsecret": "REEMPLAZAR",
+      "url": "https://<subdominio>.it-cpi018.cfapps.eu10-003.hana.ondemand.com",
+      "tokenurl": "https://<subdominio>.authentication.eu10.hana.ondemand.com/oauth/token"
+    }
+  }
+
+alert_service_key: |
+  {
+    "oauth": {
+      "clientid": "sb-yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy!b12345|it-rt-<subdominio>!b5678",
+      "clientsecret": "REEMPLAZAR",
+      "url": "https://<subdominio>.it-cpi018-rt.cfapps.eu10-003.hana.ondemand.com",
+      "tokenurl": "https://<subdominio>.authentication.eu10.hana.ondemand.com/oauth/token"
+    }
+  }
+
+alert_endpoint_path: /http/pipeline/alert
+client_name: VetClinic
+environment: prod
+monitored_queues: JMS_ORDERS_IN,JMS_INVOICES_OUT
+monitoring_freq_in_minutes: "5"
+monitoring_wait_in_seconds: "60"
+
+# Opcionales (descomentar también en manifest.yml):
+# stuck_messages_min_ratio: "1.0"
+# stuck_check_sample_size: "20"
+# alert_reminder_in_minutes: "0"
+# log_level: info

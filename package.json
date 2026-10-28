@@ -1,0 +1,16 @@
+{
+  "name": "pipeline-monitoring",
+  "version": "1.0.0",
+  "description": "Monitoriza colas JMS de SAP Integration Suite y envía alertas cuando detecta mensajes detenidos.",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "start:local": "node --env-file=.env src/index.js",
+    "test": "node --test"
+  }
+}

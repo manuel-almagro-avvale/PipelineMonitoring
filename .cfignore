@@ -1,0 +1,17 @@
+vars*.yml
+.env
+.env.*
+*service-key*.json
+*serviceKey*.json
+*.pem
+*.key
+*.p12
+*.pfx
+cpi/
+node_modules/
+test/
+.git/
+.gitignore
+*.log
+SPEC.md
+README.md

@@ -1,0 +1,25 @@
+applications:
+  - name: pipeline-monitoring-((client_slug))   # identifica al cliente: pipeline-monitoring-telefonica, -serveo, -mercedes...
+    buildpacks:
+      - nodejs_buildpack
+    memory: 256M          # margen para el pico de arranque
+    disk_quota: 512M
+    instances: 1          # OBLIGATORIO: con más de una instancia se duplican las alertas (no hay coordinación entre instancias). No usar autoescalado.
+    no-route: true
+    health-check-type: http
+    health-check-http-endpoint: /health
+    command: npm start
+    env:
+      CPI_API_SERVICE_KEY: ((cpi_api_service_key))
+      ALERT_SERVICE_KEY: ((alert_service_key))
+      ALERT_ENDPOINT_PATH: ((alert_endpoint_path))
+      CLIENT_NAME: ((client_name))
+      ENVIRONMENT: ((environment))
+      MONITORED_QUEUES: ((monitored_queues))
+      MONITORING_FREQ_IN_MINUTES: ((monitoring_freq_in_minutes))
+      MONITORING_WAIT_IN_SECONDS: ((monitoring_wait_in_seconds))
+      # Opcionales: descomentar y añadir la variable a vars.yml para cambiar el valor por defecto.
+      # STUCK_MESSAGES_MIN_RATIO: ((stuck_messages_min_ratio))     # por defecto 1.0
+      # STUCK_CHECK_SAMPLE_SIZE: ((stuck_check_sample_size))       # por defecto 20
+      # ALERT_REMINDER_IN_MINUTES: ((alert_reminder_in_minutes))   # por defecto 0 (solo un aviso)
+      # LOG_LEVEL: ((log_level))                                   # por defecto info
