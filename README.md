@@ -4,6 +4,8 @@ Monitoriza colas JMS de un tenant de SAP Integration Suite y envía una alerta a
 
 Requisitos: Node.js 24, cf CLI v8. No tiene dependencias npm.
 
+Los comandos `git`, `cf` y `npm` son iguales en todos los sistemas. Donde cambian se indican dos variantes: **Unix** (Linux/macOS, bash o zsh) y **Windows** (PowerShell).
+
 ## 1. Clonar
 
 ```bash
@@ -13,8 +15,16 @@ cd PipelineMonitoring
 
 ## 2. Configurar
 
+Unix:
+
 ```bash
 cp vars.example.yml vars.yml
+```
+
+Windows:
+
+```powershell
+Copy-Item vars.example.yml vars.yml
 ```
 
 Rellenar `vars.yml`:
@@ -67,8 +77,16 @@ cf logs pipeline-monitoring-<client_slug>
 
 ## Ejecución local
 
+Unix:
+
 ```bash
 cp .env.example .env
+```
+
+Windows:
+
+```powershell
+Copy-Item .env.example .env
 ```
 
 Rellenar `.env` (service keys en una sola línea) y arrancar:
