@@ -235,14 +235,16 @@ Según https://docs.cloudfoundry.org/devguide/deploy-apps/healthchecks.html:
 ```yaml
 applications:
   - name: pipeline-monitoring-((client_slug))   # identifica al cliente: pipeline-monitoring-telefonica, -serveo, -mercedes...
+    stack: cflinuxfs5     # cflinuxfs4 está deprecado
     buildpacks:
       - nodejs_buildpack
-    memory: 256M          # margen para el pico de arranque
+    memory: 128M          # uso real ~30 MB; margen para picos al parsear respuestas de la API
     disk_quota: 512M
     instances: 1          # OBLIGATORIO: con más de una instancia se duplican las alertas (no hay coordinación entre instancias). No usar autoescalado.
     no-route: true
     health-check-type: http
     health-check-http-endpoint: /health
+    command: node src/index.js   # sin npm como proceso padre: menos memoria y SIGTERM llega directo a la app
     env:
       CPI_API_SERVICE_KEY: ((cpi_api_service_key))
       ALERT_SERVICE_KEY: ((alert_service_key))
