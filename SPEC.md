@@ -97,7 +97,7 @@ La service key de alertas (plan `integration-flow`) solo necesita el rol de env�
    ```
 2. **Filtrado:** se conservan solo las colas de `MonitoredQueues`. Por cada cola configurada que no aparezca en la respuesta se escribe un warning (`Cola configurada no encontrada en el tenant: <nombre>`).
 3. **Parseo:** `numberOfMessages` llega como string y se convierte a entero. Si no es parseable, la cola se excluye de la iteración con un warning.
-4. Se construye el mapa `queueName → numberOfMessages`.
+4. Se construye el mapa `queueName --> numberOfMessages`.
 5. **Si ninguna cola tiene mensajes:** se registra en el log, todas las colas en seguimiento se marcan como recuperadas (apartado 6) y la iteración termina.
 6. **Primera instantánea de mensajes:** para cada cola con mensajes > 0 se consultan sus mensajes y se guarda una muestra de JMS Message IDs (apartado 5.3). **No** se usa el Correlation ID.
 7. **Espera** de `MonitoringWaitInSeconds`.
@@ -110,20 +110,14 @@ La service key de alertas (plan `integration-flow`) solo necesita el rol de env�
 
 Endpoint: `GET /MessagingQueues('{queueName}')/MessagingMessages?$format=json`
 
-Restricciones de la API:
-
-- Solo admite filtros con nombre (`jmsMessageId`, `correlationId`, `mplId`, `sender`, `receiver`, etc.). `$top`, `$skip` y similares se ignoran.
-- Devuelve como máximo un número de filas fijado en el servidor (`JMS_ODATA_PUBLIC_PAGE_SIZE`) y **no avisa** (no hay cabecera `Warning`) cuando la cola tiene más mensajes que ese límite.
-- `queueName` es un literal OData entre comillas simples..
-
 Identificador único de mensaje: **JMS Message ID** (`jmsMessageId`). Cuando se usa como filtro, se codifica para la URL.
 
 Procedimiento:
 
 1. **Primera lectura:** se obtiene la lista de mensajes de la cola. Si devuelve menos filas que `numberOfMessages`, la lista está truncada y se registra a nivel `debug`. De las filas devueltas se toma una muestra de hasta `StuckCheckSampleSize` JMS Message IDs.
 2. **Segunda lectura:** se vuelve a pedir la lista de mensajes de la cola.
-   - Cada ID de la muestra que aparezca en la lista → **presente**.
-   - Si la lista no está truncada, los IDs que no aparecen → **ausentes**.
+   - Cada ID de la muestra que aparezca en la lista --> **presente**.
+   - Si la lista no está truncada, los IDs que no aparecen --> **ausentes**.
    - Si la lista está truncada, cada ID que no aparece se comprueba individualmente con `GET /MessagingQueues('{queueName}')/MessagingMessages?jmsMessageId={id}&$format=json`: **presente** si devuelve al menos una fila, **ausente** en caso contrario.
 
 En el peor caso, esto supone `StuckCheckSampleSize` peticiones adicionales por cola candidata y por iteración.
@@ -199,7 +193,7 @@ Estado en memoria por cola: `{ firstDetectedAt, lastNotifiedAt }`.
   ```
   2026-10-28T09:15:00.120Z INFO  Iteración iniciada. Colas monitorizadas: JMS_ORDERS_IN, JMS_INVOICES_OUT
   2026-10-28T09:15:00.480Z INFO  Primera lectura: JMS_ORDERS_IN=12, JMS_INVOICES_OUT=0. Esperando 60 s para la segunda lectura.
-  2026-10-28T09:16:00.910Z WARN  Cola JMS_ORDERS_IN detenida: 12 → 15 mensajes, 100% de los mensajes previos siguen en cola.
+  2026-10-28T09:16:00.910Z WARN  Cola JMS_ORDERS_IN detenida: 12 --> 15 mensajes, 100% de los mensajes previos siguen en cola.
   2026-10-28T09:16:01.300Z INFO  Alerta enviada correctamente (1 cola).
   2026-10-28T09:16:01.301Z INFO  Iteración finalizada. Próxima iteración a las 09:20:00Z.
   ```

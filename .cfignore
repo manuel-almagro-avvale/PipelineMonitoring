@@ -8,6 +8,7 @@ vars*.yml
 *.p12
 *.pfx
 cpi/
+user-guide/
 node_modules/
 test/
 .git/
