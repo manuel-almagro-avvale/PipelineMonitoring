@@ -31,7 +31,8 @@ Rellenar `vars.yml`:
 
 | Variable | Contenido |
 |---|---|
-| `client_slug` | Sufijo del nombre de la app en CF (`pipeline-monitoring-<slug>`). |
+| `client_slug` | Sufijo del nombre de la app en CF (`pipeline-monitoring-<slug>`). También forma parte de la ruta pública. |
+| `cf_region` | Región del espacio CF, p.e. `eu10-004`. Se ve en el dominio que muestra `cf domains` (`cfapps.<region>.hana.ondemand.com`). |
 | `cpi_api_service_key` | Service key del plan `api` del tenant del cliente, **solo con roles de lectura** (SPEC apartado 3). |
 | `alert_service_key` | Service key del plan `integration-flow` del iFlow de alertas. |
 | `alert_endpoint_path` | Ruta del endpoint del iFlow, p.e. `/http/pipeline/alert`. |
@@ -59,7 +60,9 @@ cf target -o <org> -s <space>
 cf push --vars-file vars.yml
 ```
 
-La app se despliega con 1 instancia, sin ruta pública y con health check `http` sobre `/health`. No escalar a más instancias: se duplicarían las alertas.
+La app se despliega con 1 instancia y con health check `http` sobre `/health`. No escalar a más instancias: se duplicarían las alertas.
+
+`/health` queda accesible públicamente en `https://pipeline-monitoring-<client_slug>.cfapps.<cf_region>.hana.ondemand.com/health` y devuelve `{"status":"UP"}` o `{"status":"DOWN"}`. El nombre de la ruta es único en todo el dominio: si `cf push` falla porque ya existe, cambiar `client_slug`.
 
 ## 5. Comprobar que funciona
 

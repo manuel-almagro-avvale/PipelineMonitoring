@@ -2,6 +2,9 @@
 # Las service keys se pegan tal cual como bloque de texto (|), sin modificar el JSON.
 
 client_slug: clientname-sandbox
+# Región del espacio CF donde se despliega la app (ver "cf domains"), p.e.: eu10-004
+# La app queda accesible en https://pipeline-monitoring-<client_slug>.cfapps.<cf_region>.hana.ondemand.com/health
+cf_region: eu10-004
 
 cpi_api_service_key: |
   {

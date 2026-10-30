@@ -6,7 +6,8 @@ applications:
     memory: 128M          # uso real ~30 MB; margen para picos al parsear respuestas de la API
     disk_quota: 512M
     instances: 1          # OBLIGATORIO: con más de una instancia se duplican las alertas (no hay coordinación entre instancias). No usar autoescalado.
-    no-route: true
+    routes:               # ruta pública para que un iFlow pueda consultar /health (solo devuelve UP/DOWN)
+      - route: pipeline-monitoring-((client_slug)).cfapps.((cf_region)).hana.ondemand.com
     health-check-type: http
     health-check-http-endpoint: /health
     command: node src/index.js   # sin npm como proceso padre: menos memoria y SIGTERM llega directo a la app

@@ -220,7 +220,8 @@ Según https://docs.cloudfoundry.org/devguide/deploy-apps/healthchecks.html:
 - En cualquier otro caso devuelve `503 {"status":"DOWN"}` y CF reinicia la instancia.
 - Una iteración cuenta como terminada **aunque haya fallado contra la API**. El health check mide si el bucle de la app está vivo, no la salud de las dependencias. Así se evita que CF reinicie en bucle cuando el problema está en el tenant del cliente.
 - La respuesta no incluye información interna.
-- La app se despliega con `no-route: true` para no exponer `/health` públicamente (el health check de CF accede directamente al contenedor). Hay que verificarlo en el primer despliegue; si fuera necesaria una ruta, `/health` seguirá sin exponer información interna.
+- La app se despliega con una ruta pública, `https://pipeline-monitoring-<client_slug>.cfapps.<cf_region>.hana.ondemand.com/health`, para que un iFlow externo pueda comprobar que está viva. El health check de CF no la necesita: accede directamente al contenedor.
+- La ruta es pública y sin autenticación. Por eso `/health` solo devuelve `UP`/`DOWN` y cualquier otra ruta responde `404`.
 
 ## 10. Despliegue
 
@@ -235,7 +236,8 @@ applications:
     memory: 128M          # uso real ~30 MB; margen para picos al parsear respuestas de la API
     disk_quota: 512M
     instances: 1          # OBLIGATORIO: con más de una instancia se duplican las alertas (no hay coordinación entre instancias). No usar autoescalado.
-    no-route: true
+    routes:               # ruta pública para que un iFlow pueda consultar /health (solo devuelve UP/DOWN)
+      - route: pipeline-monitoring-((client_slug)).cfapps.((cf_region)).hana.ondemand.com
     health-check-type: http
     health-check-http-endpoint: /health
     command: node src/index.js   # sin npm como proceso padre: menos memoria y SIGTERM llega directo a la app
